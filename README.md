@@ -41,10 +41,9 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 	# The Caldera server should be running now. To access the web interface, go to the public IP address for the Ubunutu box Caldera is installed in. Be sure to include port 8888 in the URL and use http, NOT httpS. 
 		# x.x.x.x:8888
 		# Username: red, Password: admin (defulat Caldera creds)
-
-
-
 # Setup Traffic mirror
+	# Helpful resource - https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html
+	# Tutorial on setting up Traffic Mirrors in AWS - https://medium.com/@yojohndunn/aws-traffic-mirroring-4d1fa60d9d6f
 	# From the VPC page in AWS, on the left toolbar, go to where it says Traffic Mirroring
 	# Select Mirror targets
 		# Create a new traffic mirror target
@@ -53,6 +52,24 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 			# Network interface IDs can be found under the 'Networking' tab of the EC2 instance page.
 			# Network interface IDs should start with 'eni-'
 	# Create a Mirror filter
+		# Create a new mirror filter
+		# For this example, we are only going to set Outbound rules because we are going to create a Mirror Session for each box in the subnet (except the Malcolm box which will be our Mirror Target)
+		# Under 'Outbound rules - optional' click 'Add Rule'
+		# The first outbound rule will be to reject all TCP port 22 traffic with a source and destination set to 0.0.0.0/0
+			# This will disregard the traffic from our host machine to the individual AWS EC2 instances. 
+			# Obviously, this will reject additional SSH connections (including any internal to the subnet), oh well for now. 
+			# Pick an arbitrary rule number. I suggest '100'. 
+		# The second outbound rule will be to accept all the other traffic minus what is being rejected in our first rule.
+			# Pick an arbitrary rule number that is greater than the number in the first rule. I suggest '200'. 
+			# Select 'accept', 'All protocols', and set the source and desctination to 0.0.0.0/0
+	# Create a Mirror Session
+		# You will need to create 
+		# Create a new traffic mirror Session
+		# For the Mirror Source you will pick the network interface ('eni-') for the box whose traffic you want to send to Malcolm. If you have a box for Caldera spun up you can select the network interface for that. 
+		# For the Mirror Target you will select the mirror target you created prevously. This should point to the network interface of the Ubuntu box you spun Malcolm up on. 
+		# Pick '1' for the 'Session number'
+		# Select the filter you created previouisly for the 'Filter' field. 
+	# Once you have have created a Mirror Target, Filter and Session, all the traffic defined in the filter that is passing in and out of what your selected as Source should be sent to Malcolm encapsulated in a VXLAN packet (port 4789)
 
 
 
