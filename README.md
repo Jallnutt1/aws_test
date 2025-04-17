@@ -1,10 +1,16 @@
 This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 
+
+
 ### Initial Setup
 - Setup a VPC
 - Setup a Subnet in the VPC
 - Setup a Security Group for the VPC
 	- For testing purposes, setup an inbound rule for all IPv4 traffic from your local host machines Public IP. This was you can interact with the web interface of Malcolm and Caldera. For configuration of the Malcolm and Caldera boxes and access to additional boxes you will be using SSH. 
+- **NOTE** For AWS Traffic Mirroring, you need to 
+```sh
+export PS1='\[\e[1;31m\]\u\[\e[1;31m\]@\h\[\e[1;36m\]:\w\[\e[0m\]-$ '
+```
 
 ### Malcolm box
 - Launch an EC2 instance - Ubuntu, t3.2xlarge, 100 GB
@@ -38,7 +44,7 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 - `git clone https://github.com/mitre/caldera.git` - Clone the Caldera github repo
 - `sudo apt-get update` - Update your Ubuntu system
 - `sudo apt install nodejs npm` - Install nodejs and npm packages (these will be installed in the virtual environment)
-- `cd caldera> `- Change to the newly created caldera directory from the git clone command
+- `cd caldera`- Change to the newly created caldera directory from the git clone command
 - `pip3 install -r requirements.txt` - Install the python package requirements for caldera
 - `python3 server.py --insecure --build` - Start the caldera server 
 - The Caldera server should be running now. To access the web interface, go to the public IP address for the Ubunutu box Caldera is installed in. Be sure to include port 8888 in the URL and use http, NOT httpS. 
