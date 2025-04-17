@@ -1,10 +1,12 @@
 This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 
+### Initial Setup
 - Setup a VPC
 - Setup a Subnet in the VPC
 - Setup a Security Group for the VPC
 	- For testing purposes, setup an inbound rule for all IPv4 traffic from your local host machines Public IP. This was you can interact with the web interface of Malcolm and Caldera. For configuration of the Malcolm and Caldera boxes and access to additional boxes you will be using SSH. 
-- Malcolm box
+
+### Malcolm box
 	- Launch an EC2 instance - Ubuntu, t3.2xlarge, 100 GB
 		- Be sure to select the VPC, Subnet, and Security Group you created earlier.
 	- Go to the connect page of this Ubuntu EC2 box and select SSH client.
@@ -24,7 +26,8 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 	- To start Malcolm be sure you are in the malcolm -> scripts directory and run the command <./start>. 
 	- Once Malcolm has finsihed starting, you should be able to go to the public IP of the Malcolm box from your host computer's browser to view the Malcolm web interface. 
 		- Be sure NOT to use httpS when going to the Malcolm boxes' public IP.
-- Caldera box
+
+### Caldera box
 	- Launch an EC2 instance - Ubuntu, t3.medium, 20 GB
 		- Be sure to select the VPC, Subnet, and Security Group you created earlier.
 	- Go to the connect page of this Ubuntu EC2 box and select SSH client.
@@ -41,17 +44,18 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 	- The Caldera server should be running now. To access the web interface, go to the public IP address for the Ubunutu box Caldera is installed in. Be sure to include port 8888 in the URL and use http, NOT httpS. 
 		- x.x.x.x:8888
 		- Username: red, Password: admin (defulat Caldera creds)
-- Setup Traffic mirror
+
+### Setup Traffic mirror
 	- Helpful resource - https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html
 	- Tutorial on setting up Traffic Mirrors in AWS - https://medium.com/@yojohndunn/aws-traffic-mirroring-4d1fa60d9d6f
 	- From the VPC page in AWS, on the left toolbar, go to where it says Traffic Mirroring
-	- Select Mirror targets
+	- **Select Mirror targets**
 		- Create a new traffic mirror target
 		- Set the Target type to 'Network interface'
 		- Set the Target to the network interface of your Ubuntu box you set Malcolm up on. 
 			- Network interface IDs can be found under the 'Networking' tab of the EC2 instance page.
 			- Network interface IDs should start with 'eni-'
-	- Create a Mirror filter
+	- **Create a Mirror filter**
 		- Create a new mirror filter
 		- For this example, we are only going to set Outbound rules because we are going to create a Mirror Session for each box in the subnet (except the Malcolm box which will be our Mirror Target)
 		- Under 'Outbound rules - optional' click 'Add Rule'
@@ -62,7 +66,7 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 		- The second outbound rule will be to accept all the other traffic minus what is being rejected in our first rule.
 			- Pick an arbitrary rule number that is greater than the number in the first rule. I suggest '200'. 
 			- Select 'accept', 'All protocols', and set the source and desctination to 0.0.0.0/0
-	- Create a Mirror Session
+	- **Create a Mirror Session**
 		- You will need to create 
 		- Create a new traffic mirror Session
 		- For the Mirror Source you will pick the network interface ('eni-') for the box whose traffic you want to send to Malcolm. If you have a box for Caldera spun up you can select the network interface for that. 
