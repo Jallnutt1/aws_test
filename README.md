@@ -12,7 +12,9 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 - Go to the connect page of this Ubuntu EC2 box and select SSH client.
 	- In a termainl window, copy paste the example ssh command on the page to connect to you EC2 instance. 
 - Helpful resource - https://malcolm.fyi/docs/quickstart.html#QuickStart
-- '''git clone https://github.com/cisagov/malcolm'''
+- '''Bash
+git clone https://github.com/cisagov/malcolm
+'''
 - 'cd malcolm/scripts' <cd malcolme/scripts>
 - Use the <ip a> command to find the network interface you want to capture live traffic on. 
 - <sudo ./install.py>
