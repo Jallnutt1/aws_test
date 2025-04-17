@@ -49,12 +49,14 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 - Helpful resource - https://docs.aws.amazon.com/vpc/latest/mirroring/what-is-traffic-mirroring.html
 - Tutorial on setting up Traffic Mirrors in AWS - https://medium.com/@yojohndunn/aws-traffic-mirroring-4d1fa60d9d6f
 - From the VPC page in AWS, on the left toolbar, go to where it says Traffic Mirroring
+
 - **Select Mirror targets**
 	- Create a new traffic mirror target
 	- Set the Target type to 'Network interface'
 	- Set the Target to the network interface of your Ubuntu box you set Malcolm up on. 
 		- Network interface IDs can be found under the 'Networking' tab of the EC2 instance page.
 		- Network interface IDs should start with 'eni-'
+
 - **Create a Mirror filter**
 	- Create a new mirror filter
 	- For this example, we are only going to set Outbound rules because we are going to create a Mirror Session for each box in the subnet (except the Malcolm box which will be our Mirror Target)
@@ -66,13 +68,14 @@ This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 	- The second outbound rule will be to accept all the other traffic minus what is being rejected in our first rule.
 		- Pick an arbitrary rule number that is greater than the number in the first rule. I suggest '200'. 
 		- Select 'accept', 'All protocols', and set the source and desctination to 0.0.0.0/0
+
 - **Create a Mirror Session**
-	- You will need to create 
 	- Create a new traffic mirror Session
 	- For the Mirror Source you will pick the network interface ('eni-') for the box whose traffic you want to send to Malcolm. If you have a box for Caldera spun up you can select the network interface for that. 
 	- For the Mirror Target you will select the mirror target you created prevously. This should point to the network interface of the Ubuntu box you spun Malcolm up on. 
 	- Pick '1' for the 'Session number'
 	- Select the filter you created previouisly for the 'Filter' field. 
+
 - Once you have have created a Mirror Target, Filter and Session, all the traffic defined in the filter that is passing in and out of what your selected as Source should be sent to Malcolm encapsulated in a VXLAN packet (port 4789)
 
 
