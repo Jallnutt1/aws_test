@@ -1,4 +1,4 @@
-This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
+## This repository is to store notes on spinning up a mini aws malcolm-caldera lab.
 
 
 
@@ -84,6 +84,20 @@ export PS1='\[\e[1;31m\]\u\[\e[1;31m\]@\h\[\e[1;36m\]:\w\[\e[0m\]-$ '
 
 - Once you have have created a Mirror Target, Filter and Session, all the traffic defined in the filter that is passing in and out of what your selected as Source should be sent to Malcolm encapsulated in a VXLAN packet (port 4789)
 
+- **Create a VPC Flow Log**
+	- From your VPC instance page, scroll to the bottom and select the tab titled "Flow Logs".
+	- You can pretty much select all defaults for this; Filter:All, Maximum aggregration interval.
+	- For the 'Destination' select "Send to an Amazon S3 bucket". 
+	- Under the 'S3 Bucket ARN' field there should be an option to 'Create S3 bucket'. Click that to be taken to where you can create an S3 bucket. You can use all defualts for this. 
+	
+- **Look at VPC Flow Logs**
+	- You will need to navigate to the S3 bucket page in AWS to find your flow Logs.
+	- Use the search to search for the name of your S3 bucket.
+	- The Flow Logs are saved in a gzip (.gz) encrypted file.
+	- Download a .gz log 
+	- Open a termianl an navigate to the Downloads directory. 
+	- Use the command `gzip -d <filename>` to unzip your log file. *Note, the '-d' option will delete the original file.
+	- You should be able to open the log file directly on your machine now. 
 
 
 
